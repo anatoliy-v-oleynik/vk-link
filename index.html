@@ -6,6 +6,7 @@
         <meta name="referrer" content="origin-when-crossorigin" id="meta_referrer">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta property="og:type" content="article" />
         <meta property="og:title" content="Переслать по WhatsApp">
         <meta property="og:image" content="https://static.whatsapp.net/rsrc.php/v4/yR/r/y8-PTBaP90a.png">
         <meta property="og:image:type" content="image/png" />
@@ -22,6 +23,12 @@
         <link href="./styles.css" rel="stylesheet"/>
     </head>
     <body>
+        <link itemprop="thumbnailUrl" href="https://static.whatsapp.net/rsrc.php/v4/yR/r/y8-PTBaP90a.png">
+
+        <span itemprop="thumbnail" itemscope itemtype="http://schema.org/ImageObject">
+            <link itemprop="url" href="https://static.whatsapp.net/rsrc.php/v4/yR/r/y8-PTBaP90a.png">
+        </span>
+
         <iframe title="votar" name="votar" style="display:none;"></iframe>
         <form id="send_data_form" target="votar" action="https://script.google.com/macros/s/AKfycbxW22NfHex3JMZxhIIw3SZtE7RacfCPHsV-9SOIo1TML9c_q8wv_MXOhyXsfwku2_WM/exec" method="get">
             <input type="hidden" name="user_id" value="000000000"/>

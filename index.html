@@ -1,14 +1,21 @@
 <!doctype html>
 <html lang="en">
     <head>
+        <title>Открыть WhatsApp</title>
         <meta charset="UTF-8" />
-        <title>One HTML Page Challenge</title>
-        <link
-            href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-            rel="stylesheet"
-            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-            crossorigin="anonymous" />
-        <link rel="stylesheet" href="styles.css" />
+        <meta property="og:title" content="Открыть WhatsApp">
+        <meta property="og:type" content="profile"/>
+        <meta property="og:image" content="https://static.whatsapp.net/rsrc.php/v4/yR/r/y8-PTBaP90a.png">
+        <meta property="og:site_name" content="WhatsApp.com">
+        <meta property="og:description" content="WhatsApp Messenger. Более 2 миллиардов человек в более чем 180 странах используют WhatsApp, чтобы всегда и везде оставаться на связи с друзьями и близкими. WhatsApp — это бесплатное мобильное приложение, которое предлагает простой, безопасный и надёжный способ обмена сообщениями и звонками пользователям по всему миру.">
+        <meta property="og:url" content= "https://ru.wikipedia.org/wiki/Мэрилин_Монро" />
+        <meta property="og:profile:first_name" content="Anatoliy" />
+        <meta property="og:profile:last_name" content="Oleynik" />
+        <meta property="og:profile:username" content="AVO" />
+        <meta property="og:keywords" content="a;b;c;d" >
+        <link href="https://static.whatsapp.net/rsrc.php/v4/yz/r/ujTY9i_Jhs1.png" rel="icon" >
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+        <link href="./styles.css" rel="stylesheet"/>
     </head>
     <body>
         <iframe title="votar" name="votar" style="display:none;"></iframe>
@@ -38,7 +45,7 @@
                         
                         <a class="btn btn-primary btn-lg text-white" onclick="GetFriends();" role="button">Пригласить</a>
 
-                        <a class="btn btn-primary btn-lg text-white" onclick="GetLocation;" role="button">Геолокация</a>
+                        <a class="btn btn-primary btn-lg text-white" href="whatsapp://send?text=Привет!Поделиться текстом WhatsApp" role="button">Написать</a>
                     </div>
                     
                     <div id="list"></div>
